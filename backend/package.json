@@ -5,5 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "dockerode": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/dockerode": "^2.5.32"
   }
 }

@@ -2,6 +2,18 @@
 # yarn lockfile v1
 
 
+"@types/dockerode@^2.5.32":
+  version "2.5.32"
+  resolved "https://registry.yarnpkg.com/@types/dockerode/-/dockerode-2.5.32.tgz#52d3628f605f8ea65202541c59a8a6dd166384fd"
+  integrity sha512-TfaGOoOHxsjkWRj2sPoQ3FLmTC5mVMhZ4kzZy13U7mjtIDoloE4e7AMj5jPLbffWB6Csy5DF5e0lC9M+tnKz/A==
+  dependencies:
+    "@types/node" "*"
+
+"@types/node@*":
+  version "14.0.13"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.13.tgz#ee1128e881b874c371374c1f72201893616417c9"
+  integrity sha512-rouEWBImiRaSJsVA+ITTFM6ZxibuAlTuNOCyxVbwreu6k6+ujs7DfnU9o+PShFhET78pMBl3eH+AGSI5eOTkPA==
+
 asn1@~0.2.0:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/asn1/-/asn1-0.2.4.tgz#8d2475dfab553bb33e77b54e59e880bb8ce23136"
