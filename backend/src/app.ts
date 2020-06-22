@@ -8,7 +8,7 @@ import passport from 'passport';
 import {db,port,seed} from './config/keys';
 import {jwt} from './middlewares/User.middleware';
 import UserRoutes from './routes/User.routes';
-
+import ContainerRoutes from './routes/Container.routes';
 const app:Application=express();
 
 /* Server Middlewares */
@@ -26,6 +26,7 @@ app.use(session({
 }));
 
 /* Routes */
+app.use('/container', ContainerRoutes)
 app.use('/user', UserRoutes);
 
 /* Starting server */
@@ -34,7 +35,7 @@ app.listen(port, () => {
 });
 
 /* Connecting to DB */
-mongoose.connect(String(db),{ useNewUrlParser: true,useUnifiedTopology: true }, (err) => {
+mongoose.connect(String(db),{ useNewUrlParser: true,useUnifiedTopology: true,useCreateIndex:true }, (err) => {
     if (err) throw err;
     console.log('DB connected',String(db));
 });
