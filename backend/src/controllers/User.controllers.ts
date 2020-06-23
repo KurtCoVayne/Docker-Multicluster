@@ -28,9 +28,8 @@ class UserControllers{
         if(user) return res.json({statusText:'UserAlreadyExist'});
 
         const newUser:IUser = new UserModel({
-            username,
-            password:bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
-            email
+            username,email,
+            password:bcrypt.hashSync(password, bcrypt.genSaltSync(10))
         });
         await newUser.save();
         return res.json({statusText:'done'});
