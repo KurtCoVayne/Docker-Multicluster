@@ -1,8 +1,8 @@
 import Dockerode from 'dockerode';
-import {IUser} from '../models/User.model'
+import { IUser } from '../models/User.model'
 
 let dockerode = new Dockerode()
-if(!dockerode.modem){
+if (!dockerode.modem) {
 	console.error("Modem doesnt exist, connection to docker server failed")
 	process.exit(1)
 }
@@ -34,7 +34,7 @@ export const getContainers = async () => {
 }
 /**
  * 
- * @param users An array of users
+ * @param namesThatShouldExist self explanatory
  * @param containers An array of already existing containers
  * @returns This returns all containers wich name is not a user id
  */
@@ -47,6 +47,18 @@ export const getNonExistingContainers = (namesThatShouldExist: string[], contain
 		return acc
 	}, [])
 	return nonExistingContainers
+}
+export const getContainerWithId = (docker_id: string) => {
+	return dockerode.getContainer(docker_id)
+}
+export const stopContainer = (docker_id: string) => {
+	return dockerode.getContainer(docker_id).stop()
+}
+export const startContainer = (docker_id: string) => {
+	return dockerode.getContainer(docker_id).start()
+}
+export const removeContainer = (docker_id:string) =>{
+	return dockerode.getContainer(docker_id).remove()
 }
 // export const createImage = async (imageFile: string) => {
 // 	try {
@@ -73,15 +85,15 @@ export const getNonExistingContainers = (namesThatShouldExist: string[], contain
  * @param repo A repo where to pull the image
  * @param verbose If should print the downloading stream.
  */
-export const pullImage = async (repo: string,verbose=false) => {
+export const pullImage = async (repo: string, verbose = false) => {
 	try {
 		let stream = await dockerode.pull(repo, {})
-		if(verbose){
+		if (verbose) {
 			stream.pipe(process.stdout, {
 				end: true
 			})
 		}
-		
+
 		let flag = false
 		stream.on('end', (e: any) => {
 			console.log(e)
@@ -96,12 +108,12 @@ export const pullImage = async (repo: string,verbose=false) => {
  * 
  * @param options Take options and create container async, catches any error
  */
-export const createContainer = async (options:Dockerode.ContainerCreateOptions) => {
+export const createContainer = async (options: Dockerode.ContainerCreateOptions) => {
 	try {
 		return await dockerode.createContainer(options)
 	} catch (error) {
 		console.error(error)
 		return null
 	}
-	
+
 }

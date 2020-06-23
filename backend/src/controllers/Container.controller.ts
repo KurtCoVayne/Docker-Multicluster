@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import { mainImageRegex, mainImageRepo, sudoPassword, db, startContainerPort } from '../config/keys'
-import { getImages, pullImage, getNonExistingContainers, getContainers, createContainer } from '../api/container-api'
+import { getImages, pullImage, getNonExistingContainers, getContainers, createContainer, getContainerWithId, stopContainer, removeContainer } from '../api/container-api'
 import UserModel from '../models/User.model'
 import ContainerModel from '../models/Container.model'
-import Dockerode from 'dockerode';
 class ContainerController {
     //TODO: Should assert that the containers created are registered in database, else it will get error when trying to kill...
     public init = async () => {
@@ -31,10 +30,10 @@ class ContainerController {
             console.log(`Maxport is ${maxPort}`)
             const dbContainer = new ContainerModel({
                 user_id: element,
-                code_server_port:maxPort+1,
-                open_server_port:maxPort+2
+                code_server_port:++maxPort,
+                open_server_port:++maxPort
             })
-            maxPort +=2
+            //maxPort +=2
             let codeServerPortNamespace = dbContainer.code_server_port + "/tcp"
             let openServerPortNamespace = dbContainer.open_server_port + "/tcp"
             let container = await createContainer({
@@ -68,24 +67,43 @@ class ContainerController {
                 throw new Error("Couldnt create container");
             }
         });
-        console.log("END OF RECONSIDERATION")
+        return {text:"END OF RECONSIDERATION",nonExistingContainers}
     }
 
     public async getContainer(req: Request, res: Response) {
-        const { user_id } = req.params
-        res.send(user_id)
+        const { user_id } = req.body
+        let query = await ContainerModel.findOne({user_id:user_id}).lean(true)
+        if(query){
+            let container = getContainerWithId(query.docker_id)
+            res.status(200).json({query,container})
+        }
+        else{
+            res.status(404).json({statusText:"Either user doesnt exists or User doesnt have container, in that case, please call /reconsider"})
+            return
+        }
+        
     }
-    public async updateContainer(req: Request, res: Response) {
-        const { id } = req.params
-        res.send(id)
+    public async killContainer(req: Request, res: Response) {
+        const { containerID } = req.body
+        let container = await ContainerModel.findByIdAndUpdate(containerID,{state:"stop"}).lean()
+        if(container)res.send(await stopContainer(container.docker_id))
+        else
+            res.status(404).json({statusText:"Couldnt find container"})
+
     }
     public async deleteContainer(req: Request, res: Response) {
-        const { id } = req.params
-        res.send(id)
+        const { containerID } = req.body
+        let container = await ContainerModel.findById(containerID)
+        if(container){
+            let {docker_id} = container
+            await container.remove()
+            res.send(await removeContainer(docker_id))
+        }else{
+            res.status(404).json({statusText:"Couldnt find that container"})
+        }
     }
     public async reconsider(req: Request, res: Response) {
-        await this.init()
-        res.json("Reconsidered")
+        res.json(await this.init())
     }
 
 }
