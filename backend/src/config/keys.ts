@@ -1,5 +1,5 @@
-//export const port = process.env.PORT || 8080;
-export const port = 8080
+export const port = process.env.PORT || 9000;
+//export const port = 8080
 export const env = process.env.NODE_ENV || 'dev';
 
 export const expiresIn= process.env.TOKEN_EXPIRESIN || 60 * 60 * 24;
@@ -19,3 +19,5 @@ export const mainImageRegex = RegExp(process.env.IMAGE_REGEX || /linuxserver\/co
 export const startContainerPort = parseInt(process.env.START_CONTAINER_PORT || String(8000)) 
 
 export const sudoPassword = process.env.CONTAINER_SUDO_PASS || "development"
+
+export const watchdogRepo = process.env.WATCHDOG_REPO || "caller_watchdog"

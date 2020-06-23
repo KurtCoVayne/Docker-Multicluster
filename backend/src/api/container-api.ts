@@ -1,7 +1,8 @@
 import Dockerode from 'dockerode';
 import { IUser } from '../models/User.model'
-
-let dockerode = new Dockerode()
+import { dockerContainerServerPort, dockerContainerServerUri } from '../config/keys'
+let dockerode = new Dockerode({ host: dockerContainerServerUri, port: dockerContainerServerPort })
+// console.log(`Modem is ${JSON.stringify(dockerode.modem)}`)
 if (!dockerode.modem) {
 	console.error("Modem doesnt exist, connection to docker server failed")
 	process.exit(1)
@@ -57,7 +58,7 @@ export const stopContainer = (docker_id: string) => {
 export const startContainer = (docker_id: string) => {
 	return dockerode.getContainer(docker_id).start()
 }
-export const removeContainer = (docker_id:string) =>{
+export const removeContainer = (docker_id: string) => {
 	return dockerode.getContainer(docker_id).remove()
 }
 // export const createImage = async (imageFile: string) => {
