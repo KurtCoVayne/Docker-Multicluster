@@ -8,19 +8,31 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
+<<<<<<< HEAD
+    "strict": false,
+=======
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "outDir": "../build/backend", 
+>>>>>>> 4cc1295c6236f0ef68f95c9e41ef6c66ef96319b
     "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react"
+    "jsx": "preserve"
   },
+  "exclude": [
+    "node_modules"
+  ],
   "include": [
-    "src"
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
   ]
 }
