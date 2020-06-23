@@ -1,5 +1,4 @@
 import { Schema, Document, model } from 'mongoose';
-import { startContainerPort } from '../config/keys';
 
 const validStates = {
     values: ['stop', 'off', 'running'],
@@ -14,7 +13,7 @@ const ContainerSchema = new Schema({
     state: { type: String, required: false, default: 'off', enum: validStates },
     last_conections: { type: Date, required: false },
     container_created: { type: Date, default: Date.now(), required: false },
-    should_be_killed: { type: Boolean, required: false, default: false }
+//    should_be_killed: { type: Boolean, required: false, default: false }
 });
 
 ContainerSchema.post('remove', async function () {
@@ -32,7 +31,7 @@ export interface IContainer extends Document {
     state: string,
     last_conections: Date,
     container_created: Date,
-    should_be_killed: Boolean
+  //  should_be_killed: Boolean
 }
 
 const ContainerModel = model<IContainer>('Container', ContainerSchema)
