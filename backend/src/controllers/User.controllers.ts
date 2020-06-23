@@ -18,12 +18,11 @@ class UserControllers{
             id:user.id,email:user.email
         },String(seed),{expiresIn: expiresIn});
 
-        return(res.json({user,token,statusText:'done'}).status(200));
+        return(res.json({user,token:'JWT '+token,statusText:'done'}).status(200));
     }
 
     public async signup(req:Request,res:Response){
         const {email, username, password}=req.body;
-
         const user=await UserModel.findOne({email});
         if(user) return res.json({statusText:'UserAlreadyExist'});
 

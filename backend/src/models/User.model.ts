@@ -10,6 +10,7 @@ const UserSchema=new Schema({
     password:{ type:String, required:true },
     email:{ type:String, required:true },
     permissions:{ type:String, required:false, default:'USER_ROLE', enum:validRoles },
+    email:{type:String,required:true},
     last_seen:{ type:Date, required:false, default:Date.now() },
     account_created:{ type:Date, required:false, default:Date.now() }
 });

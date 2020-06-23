@@ -1,16 +1,15 @@
 import Dockerode from 'dockerode';
+import {IUser} from '../models/User.model'
 
 let dockerode = new Dockerode()
-
-interface User {
-	_id: string
-	name: string
-	email: string
-	password: string
-	date: string
-	container: number
+if(!dockerode.modem){
+	console.error("Modem doesnt exist, connection to docker server failed")
+	process.exit(1)
 }
-const getImages = async () => {
+/**
+ * Get all images from Docker server
+ */
+export const getImages = async () => {
 	try {
 		let images = await dockerode.listImages()
 		return images
@@ -20,7 +19,10 @@ const getImages = async () => {
 		return nullable
 	}
 }
-const getContainers = async () => {
+/**
+ * Get all containers from Docker server
+ */
+export const getContainers = async () => {
 	try {
 		let containers = await dockerode.listContainers({ all: true })
 		return containers
@@ -30,17 +32,23 @@ const getContainers = async () => {
 		return nullable
 	}
 }
-const getNonExistingContainers = (users: User[], containers: Dockerode.ContainerInfo[]) => {
+/**
+ * 
+ * @param users An array of users
+ * @param containers An array of already existing containers
+ * @returns This returns all containers wich name is not a user id
+ */
+export const getNonExistingContainers = (namesThatShouldExist: string[], containers: Dockerode.ContainerInfo[]) => {
 	let containerNames = containers.map(({ Names }) => Names)
-	let nonExistingContainers = users.reduce((acc: string[], { _id }) => {
-		let match = containerNames.some(names => names.some((name) => name === "/" + _id))
+	let nonExistingContainers = namesThatShouldExist.reduce((acc: string[], nameThatShouldExist) => {
+		let match = containerNames.some(names => names.some((name) => name === "/" + nameThatShouldExist))
 		if (!match)
-			acc.push(_id)
+			acc.push(nameThatShouldExist)
 		return acc
 	}, [])
 	return nonExistingContainers
 }
-// const createImage = async (imageFile: string) => {
+// export const createImage = async (imageFile: string) => {
 // 	try {
 // 		let stream = await dockerode.buildImage(imageFile, {
 // 			t: 'kurtcovayne/code-server'
@@ -60,7 +68,12 @@ const getNonExistingContainers = (users: User[], containers: Dockerode.Container
 // 		return false
 // 	}
 // }
-const pullImage = async (repo: string,verbose=false) => {
+/**
+ * 
+ * @param repo A repo where to pull the image
+ * @param verbose If should print the downloading stream.
+ */
+export const pullImage = async (repo: string,verbose=false) => {
 	try {
 		let stream = await dockerode.pull(repo, {})
 		if(verbose){
@@ -79,7 +92,11 @@ const pullImage = async (repo: string,verbose=false) => {
 		return false
 	}
 }
-const createContainer = async (options:Dockerode.ContainerCreateOptions) => {
+/**
+ * 
+ * @param options Take options and create container async, catches any error
+ */
+export const createContainer = async (options:Dockerode.ContainerCreateOptions) => {
 	try {
 		return await dockerode.createContainer(options)
 	} catch (error) {
@@ -88,31 +105,3 @@ const createContainer = async (options:Dockerode.ContainerCreateOptions) => {
 	}
 	
 }
-// const start = async () => {
-// 	let mainImageRepo = "linuxserver/code-server"
-// 	let mainImageNameRegex = /linuxserver\/code-server:((v[0-9]+.[0-9]+.[0-9]+-\w+)|(latest))/
-// 	let images = await getImages()
-// 	let doesMainImageExist = images.filter((image) => image.RepoTags.some((tag) => mainImageNameRegex.test(tag)))[0]
-// 	console.log(doesMainImageExist ? "Image does exist" : "Image doesnt exist")
-// 	if (!doesMainImageExist) {
-// 		console.log(await pullImage(mainImageRepo))
-// 	}
-
-// 	let limit = 3
-// 	users = users.slice(0, limit)
-// 	let nonExistingContainers = getNonExistingContainers(users, await getContainers())
-// 	nonExistingContainers.forEach(async element => {
-// 		console.log(await createContainer({
-// 			Image: doesMainImageExist.RepoTags[0],
-// 			name:element
-// 		}))
-// 	});
-
-// 	// if (images) {
-// 	// 	const nonExistingContainers = getNonExistingContainers(users,images)
-// 	// 	console.log(nonExistingContainers)
-// 	// }
-// 	return null
-// }
-
-// });
