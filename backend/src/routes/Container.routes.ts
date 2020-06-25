@@ -13,9 +13,13 @@ const router = Router();
  * **FOR CREATION SHOULD ALWAYS BE ONE AND ONLY ONE USER PER CONTAINER AND VICEVERSA,RECALL CONTAINER CONSTRUCTOR
  * 
  */
+
 router.get('/reconsider', passport.authenticate('jwt', { session: false }), userMiddleware.verifyAdminRole, (req, res, next) => containerController.reconsider(req, res))
+
 router.get('/get', passport.authenticate('jwt', { session: false }), containerController.getContainer)
+
 router.put('/stop', passport.authenticate('jwt', { session: false }), userMiddleware.verifyAdminRole, containerController.killContainer)
+
 router.delete('/del', passport.authenticate('jwt', { session: false }), userMiddleware.verifyAdminRole, containerController.deleteContainer)
 
 

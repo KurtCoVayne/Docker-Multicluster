@@ -8,7 +8,7 @@ const initialState={
     isLogged:false
 };
 
-const reducer=(state= initialState, action)=>{
+const reducer=(state= initialState, action:any)=>{
     if(action.type==='UPDATE_CONTENT'){
         return{
             ... state,

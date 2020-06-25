@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { restapi } from './../config/keys';
-import store from './../../redux/user/store';
-import { updateContent } from './../../redux/user/actions';
+/* import store from './../../redux/user/store';
+import { updateContent } from './../../redux/user/actions'; */
 import { useRouter } from 'next/router';
+import NavigationBar from '../NavigationBar';
 
-function Signup(){
+function Signup(props:any){
 
     const router=useRouter();
 
@@ -56,6 +57,7 @@ function Signup(){
 
     return(
         <div>
+            <NavigationBar title={props.title} noAuth={true}/>
             <h2>Registro de Usuario</h2>
             <form onSubmit={handleSubmit}>
                 <label>Nombre de Usuario: </label>

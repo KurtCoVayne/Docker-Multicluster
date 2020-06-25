@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import store from './../../redux/user/store';
 import { updateContent } from './../../redux/user/actions';
+import NavigationBar from '../NavigationBar';
 
-function Signin(){
+function Signin(props:any){
 
     const router=useRouter();
 
@@ -66,17 +67,20 @@ function Signin(){
 
     return(
         <div>
-            <h2>Inicio de Sesion</h2>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="email">Email: </label>
-                <input type="email" name="email" value={email} onChange={(e)=> setEmail(e.target.value)}/>
-                <br/>
-                <label>Password: </label>
-                <input type="password" name="password" value={password} onChange={(e)=> setPassword(e.target.value)} />
-                <br/>
-                <button type="submit">Enviar</button>
-            </form>
-            { error.state==true ? <ShowError/> : '' }
+            <NavigationBar title={props.title} noAuth={true}/>
+            <div className="container">
+                <h2>Inicio de Sesion</h2>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="email">Email: </label>
+                    <input type="email" name="email" value={email} onChange={(e)=> setEmail(e.target.value)}/>
+                    <br/>
+                    <label>Password: </label>
+                    <input type="password" name="password" value={password} onChange={(e)=> setPassword(e.target.value)} />
+                    <br/>
+                    <button type="submit">Enviar</button>
+                </form>
+                { error.state==true ? <ShowError/> : '' }
+            </div>
         </div>
     );
 }

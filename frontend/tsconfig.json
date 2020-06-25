@@ -8,14 +8,9 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-<<<<<<< HEAD
-    "strict": false,
-=======
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "outDir": "../build/backend", 
->>>>>>> 4cc1295c6236f0ef68f95c9e41ef6c66ef96319b
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "noUnusedLocals": true,
@@ -33,6 +28,6 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx", "next.config.js"
   ]
 }

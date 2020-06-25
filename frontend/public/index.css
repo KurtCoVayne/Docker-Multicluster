@@ -1,0 +1,23 @@
+*{
+    margin: 0%;
+    padding: 0%;
+}
+
+.indexMainContainer{
+    width: 100%;
+    height: auto;
+    background-color: #dae1e7;
+    color: #222831;
+}
+
+.mainSection{
+    background-color: #dae1e7;
+    padding: 10%;
+}
+
+.info{
+    background-color: #00909e;
+    width: 100%;
+    height: auto;
+    padding: 1%;
+}

@@ -1,40 +1,69 @@
-import Link from 'next/link';
-import store from '../redux/user/store';
+import Link from "next/link";
+import store from "../redux/user/store";
 
-function NavigationBar(){
+const css=require('./../public/navbar.css');
 
-    const data= store.getState();
-    let isLogged= data.reducer.isLogged;
+function NavigationBar(props:any){
+
+    const { username ,isLogged }= store.getState().reducer;
+    
+    function Logout(){
+
+    }
 
     function Auth(){
         return(
-            <div>
-                <li>
-                    <Link as='/user/signin' href='/user/signin'>
-                        <a>Iniciar Sesion</a>
+            <div className="row">
+                <div className="col-md">
+                    <Link as="/user/signin" href="/user/signin">
+                        <a><strong>Iniciar Sesion</strong></a>
                     </Link>
-                </li>
-                <li>
-                    <Link href='/user/signup'>
-                        <a>Registrarse</a>
+                </div>
+                <div className="col-md">
+                    <Link href="/user/signup">
+                        <a><strong>Registrarse</strong></a>
                     </Link>
-                </li>
+                </div>
+            </div>
+        );
+    }
+
+    function User(){
+        return(
+            <div className="row">
+                <div className="col-md">
+                    <a><strong>{username}</strong></a>
+                </div>
+                <div className="col-md">
+                    <button onClick={Logout} >Cerrar Sesion</button>
+                </div>
             </div>
         );
     }
 
     return(
-        <div>
-            <nav>
-                <ul>
-                    <li>
-                        <Link href='/'>
-                            <a>Inicio</a>
-                        </Link>
-                    </li>
-                    { isLogged ? '' : <Auth/> }
-                </ul>
-            </nav>
+        <div className={css.navigation}>
+            <div className="container">
+                <nav>
+                    <div className="row">
+                        <div className="col-md">
+                            <Link href="/">
+                                <a><strong>{props.title}</strong></a>
+                            </Link>
+                        </div>
+                        <div className="col-md">
+                            <Link href="/#info">
+                                <a><strong>Info</strong></a>
+                            </Link>
+                        </div>
+                        <div className="col-md">
+                            { (props.noAuth) ? "" :
+                              isLogged ? <User/> : <Auth/>
+                            }
+                        </div>
+                    </div>
+                </nav>
+            </div>
         </div>
     );
 }
